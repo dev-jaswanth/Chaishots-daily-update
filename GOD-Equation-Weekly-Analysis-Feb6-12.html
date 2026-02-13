@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chai Shots | GOD Equation Weekly Analysis | Feb 6-12, 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --bg-primary: #0f1117;
+            --bg-card: #1a1d28;
+            --bg-card-hover: #222636;
+            --bg-header: #0a0c14;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --text-muted: #5f6368;
+            --accent: #8ab4f8;
+            --accent-dim: #4a7cc9;
+            --green: #34a853;
+            --green-bg: rgba(52, 168, 83, 0.12);
+            --yellow: #fbbc04;
+            --yellow-bg: rgba(251, 188, 4, 0.12);
+            --red: #ea4335;
+            --red-bg: rgba(234, 67, 53, 0.12);
+            --border: rgba(255,255,255,0.06);
+            --gap: 16px;
+            --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .dashboard { max-width: 1440px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1d28 0%, #0f1117 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 32px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+        .header h1 span { color: var(--accent); }
+        .header-meta { font-size: 13px; color: var(--text-secondary); text-align: right; }
+        .header-meta .date { font-weight: 600; color: var(--text-primary); }
+
+        /* Alert Banner */
+        .alert-banner {
+            background: var(--red-bg);
+            border: 1px solid rgba(234, 67, 53, 0.3);
+            border-radius: var(--radius);
+            padding: 16px 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .alert-banner .alert-icon { font-size: 18px; margin-top: 2px; font-weight: 700; }
+        .alert-banner .alert-content { flex: 1; }
+        .alert-banner .alert-title { font-weight: 700; font-size: 14px; color: var(--red); margin-bottom: 4px; }
+        .alert-banner .alert-detail { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+        .alert-p1 { background: var(--yellow-bg); border-color: rgba(251, 188, 4, 0.3); }
+        .alert-p1 .alert-title { color: var(--yellow); }
+
+        /* KPI Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--gap);
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: background 0.2s;
+        }
+        .kpi-card:hover { background: var(--bg-card-hover); }
+        .kpi-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+        .kpi-value { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+        .kpi-change { font-size: 12px; font-weight: 600; }
+        .kpi-change.positive { color: var(--green); }
+        .kpi-change.negative { color: var(--red); }
+        .kpi-change.neutral { color: var(--yellow); }
+        .kpi-status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 6px; }
+        .status-green { background: var(--green-bg); color: var(--green); }
+        .status-yellow { background: var(--yellow-bg); color: var(--yellow); }
+        .status-red { background: var(--red-bg); color: var(--red); }
+
+        /* Chart Grid */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            margin-bottom: 20px;
+        }
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+        .chart-card.full-width { grid-column: 1 / -1; }
+        .chart-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .chart-subtitle { font-size: 11px; color: var(--text-secondary); margin-bottom: 16px; }
+        .chart-container { position: relative; height: 280px; }
+        .chart-container.tall { height: 320px; }
+
+        /* Scorecard */
+        .scorecard {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        .scorecard h2 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+        .scorecard table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .scorecard th { text-align: left; padding: 10px 12px; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+        .scorecard td { padding: 12px; border-bottom: 1px solid var(--border); }
+        .scorecard tr:last-child td { border-bottom: none; }
+        .scorecard tr:hover { background: rgba(255,255,255,0.02); }
+        .sc-metric { font-weight: 600; }
+        .sc-value { font-variant-numeric: tabular-nums; }
+        .sc-badge { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+
+        /* Action Cards */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--gap);
+            margin-bottom: 20px;
+        }
+        .action-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+        .action-card h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .action-card h3.immediate { color: var(--red); }
+        .action-card h3.this-week { color: var(--yellow); }
+        .action-card h3.strategic { color: var(--accent); }
+        .action-item { font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; padding-left: 16px; position: relative; line-height: 1.5; }
+        .action-item::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; }
+        .action-item.red::before { background: var(--red); }
+        .action-item.yellow::before { background: var(--yellow); }
+        .action-item.blue::before { background: var(--accent); }
+        .action-strong { color: var(--text-primary); font-weight: 600; }
+
+        /* Insights Section */
+        .insights {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .insights h2 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+        .insight-item { display: flex; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+        .insight-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .insight-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .insight-icon.danger { background: var(--red-bg); }
+        .insight-icon.warning { background: var(--yellow-bg); }
+        .insight-icon.success { background: var(--green-bg); }
+        .insight-icon.info { background: rgba(138, 180, 248, 0.12); }
+        .insight-text h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+        .insight-text p { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .chart-grid { grid-template-columns: 1fr; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+            .actions-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>Chai Shots <span>GOD Equation</span></h1>
+                <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Weekly Product Health Review | Revenue Decomposition & Diagnostic</div>
+            </div>
+            <div class="header-meta">
+                <div class="date">Feb 6 - 12, 2026</div>
+                <div>vs Jan 30 - Feb 5, 2026</div>
+                <div style="margin-top:4px;">Generated: Feb 13, 2026</div>
+            </div>
+        </div>
+
+        <!-- P0 Alert -->
+        <div class="alert-banner">
+            <div class="alert-icon">P0</div>
+            <div class="alert-content">
+                <div class="alert-title">RR Engaged below 70% threshold - Engaged users NOT renewing</div>
+                <div class="alert-detail">Feb 11-12 saw RR Engaged at 59.6% and 64.1% (target: >80%, red flag: <70%). This is the most dangerous signal in the GOD Equation. When users who ARE watching your content still choose not to renew, it means the content is not delivering enough value to justify the price. Investigate payment failures, content quality degradation, and competitor activity immediately.</div>
+            </div>
+        </div>
+        <div class="alert-banner alert-p1">
+            <div class="alert-icon">P1</div>
+            <div class="alert-content">
+                <div class="alert-title">Revenue Mix: 79% Acquisition / 21% Retention (Target: 35/65)</div>
+                <div class="alert-detail">Revenue growth is almost entirely acquisition-driven. This is unsustainable and marketing-spend-dependent. If ad spend pauses, revenue will cliff. The retention engine must strengthen to support compound growth. This matches Scenario 7: "Revenue Up but from Wrong Source".</div>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-label">Weekly Revenue</div>
+                <div class="kpi-value">Rs 35.3L</div>
+                <div class="kpi-change positive">+82.1% WoW</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Avg Daily Installs</div>
+                <div class="kpi-value">16,225</div>
+                <div class="kpi-change positive">+47.4% WoW</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Avg Conversion Rate</div>
+                <div class="kpi-value">15.4%</div>
+                <div class="kpi-change positive">+3.66pp WoW</div>
+                <div class="kpi-status status-green">GREEN</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Avg Engagement %</div>
+                <div class="kpi-value">38.1%</div>
+                <div class="kpi-change positive">+4.9pp WoW</div>
+                <div class="kpi-status status-yellow">YELLOW</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Avg Renewal Rate</div>
+                <div class="kpi-value">54.7%</div>
+                <div class="kpi-change negative">-2.3pp WoW</div>
+                <div class="kpi-status status-red">BELOW 60%</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Avg RR Engaged</div>
+                <div class="kpi-value">68.0%</div>
+                <div class="kpi-change positive">+1.0pp WoW</div>
+                <div class="kpi-status status-red">BELOW 70%</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">ARPU (New Sub)</div>
+                <div class="kpi-value">Rs 151</div>
+                <div class="kpi-change negative">-8.6% WoW</div>
+            </div>
+        </div>
+
+        <!-- Charts Row 1: Revenue -->
+        <div class="chart-grid">
+            <div class="chart-card full-width">
+                <div class="chart-title">Daily Revenue: Acquisition vs Retention Engines</div>
+                <div class="chart-subtitle">Stacked area showing revenue composition | Target: 35% new / 65% renewals | Current: 79% new / 21% renewals</div>
+                <div class="chart-container tall">
+                    <canvas id="revenueStackChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 2: Funnel + Retention -->
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-title">Acquisition Funnel</div>
+                <div class="chart-subtitle">Installs, New Subs, and Conversion Rate</div>
+                <div class="chart-container">
+                    <canvas id="funnelChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">Engagement-Renewal Nexus</div>
+                <div class="chart-subtitle">Engaged % drives weighted renewal rate (leading indicator)</div>
+                <div class="chart-container">
+                    <canvas id="engRenChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 3: Renewal Rates + ARPU -->
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-title">Renewal Rate Breakdown</div>
+                <div class="chart-subtitle">Engaged vs Not-Engaged vs Weighted | Thresholds: Eng >80%, NotEng >30%</div>
+                <div class="chart-container">
+                    <canvas id="rrChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">Revenue Contribution Analysis</div>
+                <div class="chart-subtitle">Daily revenue waterfall: New Subs + Renewal Revenue</div>
+                <div class="chart-container">
+                    <canvas id="waterfallChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 4: ARPU + Expiring -->
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-title">ARPU Tracking</div>
+                <div class="chart-subtitle">New Sub vs Engaged Renewal vs Not-Engaged Renewal ARPU</div>
+                <div class="chart-container">
+                    <canvas id="arpuChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">Expiring Cohort Profile</div>
+                <div class="chart-subtitle">Expiring volume and engagement split</div>
+                <div class="chart-container">
+                    <canvas id="expiringChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Scorecard -->
+        <div class="scorecard">
+            <h2>Product Health Scorecard (Latest: Feb 12, 2026)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Current</th>
+                        <th>7d Avg</th>
+                        <th>Prior Week</th>
+                        <th>WoW Change</th>
+                        <th>Status</th>
+                        <th>Threshold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="sc-metric">Daily Revenue</td>
+                        <td class="sc-value">Rs 5,92,156</td>
+                        <td class="sc-value">Rs 5,04,408</td>
+                        <td class="sc-value">Rs 2,76,933</td>
+                        <td class="sc-value" style="color:var(--green)">+82.1%</td>
+                        <td><span class="sc-badge" style="background:var(--green-bg);color:var(--green)">GREEN</span></td>
+                        <td style="color:var(--text-muted)">G: <15%, Y: 15-30%, R: >30%</td>
+                    </tr>
+                    <tr>
+                        <td class="sc-metric">Conversion Rate</td>
+                        <td class="sc-value">15.9%</td>
+                        <td class="sc-value">15.4%</td>
+                        <td class="sc-value">11.8%</td>
+                        <td class="sc-value" style="color:var(--green)">+3.66pp</td>
+                        <td><span class="sc-badge" style="background:var(--green-bg);color:var(--green)">GREEN</span></td>
+                        <td style="color:var(--text-muted)">G: >10%, Y: 8-10%, R: <8%</td>
+                    </tr>
+                    <tr>
+                        <td class="sc-metric">Engaged %</td>
+                        <td class="sc-value">42.5%</td>
+                        <td class="sc-value">38.1%</td>
+                        <td class="sc-value">33.2%</td>
+                        <td class="sc-value" style="color:var(--green)">+4.9pp</td>
+                        <td><span class="sc-badge" style="background:var(--yellow-bg);color:var(--yellow)">YELLOW</span></td>
+                        <td style="color:var(--text-muted)">G: >45%, Y: 35-45%, R: <35%</td>
+                    </tr>
+                    <tr>
+                        <td class="sc-metric">RR Engaged</td>
+                        <td class="sc-value" style="color:var(--red)">64.1%</td>
+                        <td class="sc-value">68.0%</td>
+                        <td class="sc-value">67.0%</td>
+                        <td class="sc-value" style="color:var(--green)">+1.0pp avg</td>
+                        <td><span class="sc-badge" style="background:var(--red-bg);color:var(--red)">RED - P0</span></td>
+                        <td style="color:var(--text-muted)">G: >80%, Y: 70-80%, R: <70%</td>
+                    </tr>
+                    <tr>
+                        <td class="sc-metric">RR Not-Engaged</td>
+                        <td class="sc-value">45.0%</td>
+                        <td class="sc-value">47.6%</td>
+                        <td class="sc-value">49.9%</td>
+                        <td class="sc-value" style="color:var(--red)">-2.3pp</td>
+                        <td><span class="sc-badge" style="background:var(--green-bg);color:var(--green)">GREEN</span></td>
+                        <td style="color:var(--text-muted)">G: >30%, Y: 20-30%, R: <20%</td>
+                    </tr>
+                    <tr>
+                        <td class="sc-metric">Weighted Renewal Rate</td>
+                        <td class="sc-value" style="color:var(--red)">53.1%</td>
+                        <td class="sc-value">54.7%</td>
+                        <td class="sc-value">57.0%</td>
+                        <td class="sc-value" style="color:var(--red)">-2.3pp</td>
+                        <td><span class="sc-badge" style="background:var(--red-bg);color:var(--red)">RED</span></td>
+                        <td style="color:var(--text-muted)">G: >60%, Y: 50-60%, R: <50%</td>
+                    </tr>
+                    <tr>
+                        <td class="sc-metric">Revenue Mix (Renewal %)</td>
+                        <td class="sc-value" style="color:var(--red)">20.2%</td>
+                        <td class="sc-value">21.2%</td>
+                        <td class="sc-value">23.1%</td>
+                        <td class="sc-value" style="color:var(--red)">-1.9pp</td>
+                        <td><span class="sc-badge" style="background:var(--red-bg);color:var(--red)">RED</span></td>
+                        <td style="color:var(--text-muted)">G: >60%, Y: 50-60%, R: <50%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Key Insights -->
+        <div class="insights">
+            <h2>Key Insights & Scenario Diagnosis</h2>
+
+            <div class="insight-item">
+                <div class="insight-icon danger">!</div>
+                <div class="insight-text">
+                    <h4>Scenario Match: Revenue from Wrong Source (Scenario 7)</h4>
+                    <p>Revenue is up 82.1% WoW but 79% comes from acquisition (new subs). Renewal revenue is only 21% of total vs the 60-70% target. This is classic "revenue looks great on the surface, but growth is coming from an unsustainable source." If marketing spend pauses, revenue will cliff immediately. The business is sprinting on one leg.</p>
+                </div>
+            </div>
+
+            <div class="insight-item">
+                <div class="insight-icon danger">!</div>
+                <div class="insight-text">
+                    <h4>Scenario Match: Engaged Renewal Rate Dropped Below 70% (Scenario 10)</h4>
+                    <p>RR Engaged averaged 68.0% this week, with Feb 11 hitting 59.6% and Feb 12 at 64.1% — both well below the 70% red flag threshold. This is a P0 issue. Even users who watched content aren't renewing. This points to content quality issues, competitive pressure, or payment infrastructure problems. Immediate action required.</p>
+                </div>
+            </div>
+
+            <div class="insight-item">
+                <div class="insight-icon warning">!</div>
+                <div class="insight-text">
+                    <h4>ARPU Compression Signal - Quality vs Volume Trade-off</h4>
+                    <p>New Sub ARPU dropped from Rs 165 to Rs 151 (-8.6% WoW). This suggests more users are choosing monthly plans over quarterly/yearly. Combined with the 47.4% install surge, this indicates the new traffic is lower-intent, price-sensitive users. The install volume spike is driving revenue, but cohort quality is deteriorating.</p>
+                </div>
+            </div>
+
+            <div class="insight-item">
+                <div class="insight-icon success">+</div>
+                <div class="insight-text">
+                    <h4>Bright Spot: Conversion Rate at All-Time Highs</h4>
+                    <p>Conversion rate surged to 15.4% average (vs 11.8% prior week), peaking at 16.7% on Feb 6. This is well above the 10% green threshold. The funnel from install to subscription is operating at peak efficiency. The acquisition machine is firing on all cylinders — now the retention engine needs to catch up.</p>
+                </div>
+            </div>
+
+            <div class="insight-item">
+                <div class="insight-icon info">?</div>
+                <div class="insight-text">
+                    <h4>Renewal Cliff Warning: Early-to-Mid March</h4>
+                    <p>This week's 2,576 daily new subs will become expiring subs in ~30 days. If engagement stays at 38.1% (YELLOW) and RR Engaged remains at 68%, expect: 2,576 expiring x 38.1% engaged x 68% RR = ~668 engaged renewals + 2,576 x 61.9% not-engaged x 47.6% RR = ~759 not-engaged renewals. Total ~1,427 renewals vs current 942. Volume helps, but low engagement and declining RR Engaged pose risk.</p>
+                </div>
+            </div>
+
+            <div class="insight-item">
+                <div class="insight-icon warning">!</div>
+                <div class="insight-text">
+                    <h4>Expiring Spike Pattern (Scenario 8)</h4>
+                    <p>Feb 11-12 saw 1,921 and 1,992 expiring subs (above weekly average of 1,649). These are large cohorts acquired ~30 days ago during install surges, now hitting renewal with 40-42% engagement — below the 45% green threshold. This explains the RR decline: high-volume, lower-quality cohorts from January acquisitions are now churning at elevated rates.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommended Actions -->
+        <div class="actions-grid">
+            <div class="action-card">
+                <h3 class="immediate">Immediate Actions (Today)</h3>
+                <div class="action-item red"><span class="action-strong">Investigate RR Engaged <70%:</span> Feb 11-12 saw engaged users NOT renewing. Check Cashfree/RevenueCat payment success rates. Verify no auto-renewal flow breakage. This is P0 — needs resolution within 2 hours.</div>
+                <div class="action-item red"><span class="action-strong">Content quality audit:</span> Pull viewing data for engaged users who churned Feb 11-12. What content did they watch? Check completion rates. If low-quality filler content, these users felt the content didn't justify renewal.</div>
+                <div class="action-item red"><span class="action-strong">Competitor intelligence:</span> Check if a major competitor launched new content or price cuts this week. RR Engaged below 70% with stable engagement means users are watching but choosing not to pay.</div>
+            </div>
+            <div class="action-card">
+                <h3 class="this-week">This Week</h3>
+                <div class="action-item yellow"><span class="action-strong">Cohort quality segmentation:</span> Segment this week's 18,030 new subs by install source. Track 7-day engagement rate per channel. Pause any channel with <30% engagement — these are the cohorts that will churn hard in March.</div>
+                <div class="action-item yellow"><span class="action-strong">ARPU investigation:</span> Pull plan mix breakdown (monthly/quarterly/yearly) for current week vs prior. Rs 151 ARPU suggests heavy shift to monthly. Check if discount codes are leaking or if paywall is defaulting to monthly.</div>
+                <div class="action-item yellow"><span class="action-strong">Payment infrastructure review:</span> RR Engaged and RR Not-Engaged both declining suggests payment-side issue, not just content. Coordinate with engineering to check dunning, retry logic, and gateway success rates.</div>
+                <div class="action-item yellow"><span class="action-strong">Re-engagement campaign:</span> Target the 57.5% not-engaged expiring users with personalized content notifications. Push top-performing shows. Even a 5pp lift in engagement can add 50-80 renewals per day.</div>
+            </div>
+            <div class="action-card" style="grid-column: 1 / -1;">
+                <h3 class="strategic">Strategic (This Month)</h3>
+                <div class="action-item blue"><span class="action-strong">Retention rebalancing (Critical):</span> The acquisition engine is operating at 15.4% conversion with 47% install growth. But retention is RED across the board (RR Engaged <70%, Weighted RR <60%, Revenue Mix 79% acquisition). Every Rs spent on retention improvements will compound; every Rs spent on more acquisition only accelerates the March renewal cliff. Immediately rebalance the product roadmap toward engagement and renewal optimization.</div>
+                <div class="action-item blue"><span class="action-strong">March renewal cliff modeling:</span> Build a 30-day forward projection using current engagement rates (38.1%) and RR Engaged (68%) to estimate the renewal revenue when this week's cohorts expire. Present to leadership with scenario analysis: current state vs +5pp engagement vs +10pp engagement + +10pp RR Engaged. Quantify the revenue impact of inaction.</div>
+                <div class="action-item blue"><span class="action-strong">Quality threshold enforcement:</span> Set a minimum quality bar: any acquisition cohort with <35% 7-day engagement gets flagged. If a channel consistently produces <35% engagement cohorts, pause that channel immediately. Volume growth without quality is a ticking time bomb.</div>
+                <div class="action-item blue"><span class="action-strong">Content release acceleration:</span> If RR Engaged is declining because engaged users are watching but not finding enough value, the solution is higher-quality, more frequent content releases. Coordinate with content team to pull forward any high-quality tentpole content scheduled for later. A strong content drop in the next 7 days can reverse the RR Engaged trend before it becomes entrenched.</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Chai Shots | GOD Equation Analysis Methodology v1.0 | Founder's Office | Generated Feb 13, 2026
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // DATA
+        // ==========================================
+        const CW = [
+            {date:'Feb 6',daily_rev:434869,installs:13220,new_subs:2210,conv:16.72,arpu_new:159.31,expiring:1332,eng_pct:31.98,rr_eng:75.59,rr_noteng:47.90,rr_w:56.76,tot_ren:756,rev_new:352076,rev_ren:82793,rev_ren_eng:37478,rev_ren_noteng:45315,arpu_eng_ren:116.39,arpu_noteng_ren:104.41},
+            {date:'Feb 7',daily_rev:414225,installs:13819,new_subs:2248,conv:16.27,arpu_new:151.47,expiring:1125,eng_pct:33.33,rr_eng:77.87,rr_noteng:51.73,rr_w:60.44,tot_ren:680,rev_new:340506,rev_ren:73719,rev_ren_eng:33658,rev_ren_noteng:40061,arpu_eng_ren:115.27,arpu_noteng_ren:103.25},
+            {date:'Feb 8',daily_rev:487881,installs:16322,new_subs:2544,conv:15.59,arpu_new:154.07,expiring:1338,eng_pct:34.53,rr_eng:82.68,rr_noteng:55.37,rr_w:64.80,tot_ren:867,rev_new:391950,rev_ren:95931,rev_ren_eng:44617,rev_ren_noteng:51314,arpu_eng_ren:116.80,arpu_noteng_ren:105.80},
+            {date:'Feb 9',daily_rev:531007,installs:17556,new_subs:2684,conv:15.29,arpu_new:155.48,expiring:2134,eng_pct:40.91,rr_eng:56.59,rr_noteng:44.09,rr_w:49.20,tot_ren:1050,rev_new:417310,rev_ren:113697,rev_ren_eng:56103,rev_ren_noteng:57594,arpu_eng_ren:113.57,arpu_noteng_ren:103.59},
+            {date:'Feb 10',daily_rev:541908,installs:18018,new_subs:2760,conv:15.32,arpu_new:152.66,expiring:1899,eng_pct:38.07,rr_eng:70.54,rr_noteng:48.13,rr_w:56.66,tot_ren:1076,rev_new:421335,rev_ren:120574,rev_ren_eng:61690,rev_ren_noteng:58884,arpu_eng_ren:120.96,arpu_noteng_ren:104.03},
+            {date:'Feb 11',daily_rev:563494,installs:21465,new_subs:3031,conv:14.12,arpu_new:148.91,expiring:1921,eng_pct:40.34,rr_eng:59.61,rr_noteng:46.51,rr_w:51.80,tot_ren:995,rev_new:451355,rev_ren:112139,rev_ren_eng:54236,rev_ren_noteng:57903,arpu_eng_ren:117.39,arpu_noteng_ren:108.64},
+            {date:'Feb 12',daily_rev:592156,installs:20201,new_subs:3217,conv:15.92,arpu_new:146.88,expiring:1992,eng_pct:42.47,rr_eng:64.07,rr_noteng:45.03,rr_w:53.11,tot_ren:1058,rev_new:472499,rev_ren:119656,rev_ren_eng:67207,rev_ren_noteng:52449,arpu_eng_ren:124.00,arpu_noteng_ren:101.65}
+        ];
+
+        const PW = [
+            {date:'Jan 30',daily_rev:291561,installs:12090,new_subs:1341,conv:11.09,arpu_new:163.30,expiring:1171,eng_pct:32.37,rr_eng:60.16,rr_noteng:54.17,rr_w:56.11,tot_ren:657,rev_new:218990,rev_ren:72571},
+            {date:'Jan 31',daily_rev:232466,installs:11418,new_subs:1164,conv:10.19,arpu_new:167.30,expiring:616,eng_pct:35.39,rr_eng:70.64,rr_noteng:42.46,rr_w:52.44,tot_ren:323,rev_new:194739,rev_ren:37727},
+            {date:'Feb 1',daily_rev:269545,installs:13230,new_subs:1367,conv:10.33,arpu_new:155.66,expiring:919,eng_pct:29.71,rr_eng:72.53,rr_noteng:52.94,rr_w:58.76,tot_ren:540,rev_new:212785,rev_ren:56760},
+            {date:'Feb 2',daily_rev:290929,installs:10527,new_subs:1326,conv:12.60,arpu_new:160.62,expiring:1118,eng_pct:33.54,rr_eng:68.27,rr_noteng:50.34,rr_w:56.35,tot_ren:630,rev_new:212978,rev_ren:77951},
+            {date:'Feb 3',daily_rev:277966,installs:9606,new_subs:1315,conv:13.69,arpu_new:162.34,expiring:1089,eng_pct:31.86,rr_eng:58.79,rr_noteng:52.02,rr_w:54.18,tot_ren:590,rev_new:213478,rev_ren:64487},
+            {date:'Feb 4',daily_rev:325228,installs:10373,new_subs:1486,conv:14.33,arpu_new:166.34,expiring:1138,eng_pct:34.80,rr_eng:80.05,rr_noteng:52.16,rr_w:61.86,tot_ren:704,rev_new:247187,rev_ren:78041},
+            {date:'Feb 5',daily_rev:351301,installs:11408,new_subs:1825,conv:16.00,arpu_new:155.54,expiring:1021,eng_pct:36.73,rr_eng:74.93,rr_noteng:49.54,rr_w:58.86,tot_ren:601,rev_new:283854,rev_ren:67448}
+        ];
+
+        const COLORS = {
+            accent: '#8ab4f8',
+            green: '#34a853',
+            red: '#ea4335',
+            yellow: '#fbbc04',
+            purple: '#a77bfa',
+            orange: '#f59e0b',
+            teal: '#14b8a6',
+            pink: '#ec4899',
+            grey: '#6b7280',
+        };
+
+        const allDates = [...PW.map(d=>d.date), ...CW.map(d=>d.date)];
+        const cwDates = CW.map(d=>d.date);
+
+        function fmt(n) {
+            if (n >= 100000) return 'Rs ' + (n/100000).toFixed(1) + 'L';
+            if (n >= 1000) return 'Rs ' + (n/1000).toFixed(0) + 'K';
+            return 'Rs ' + n.toFixed(0);
+        }
+
+        // ==========================================
+        // CHART 1: Revenue Stacked Area
+        // ==========================================
+        new Chart(document.getElementById('revenueStackChart'), {
+            type: 'bar',
+            data: {
+                labels: allDates,
+                datasets: [
+                    {
+                        label: 'Renewal Revenue',
+                        data: [...PW.map(d=>d.rev_ren), ...CW.map(d=>d.rev_ren)],
+                        backgroundColor: COLORS.teal + 'CC',
+                        borderColor: COLORS.teal,
+                        borderWidth: 1,
+                        borderRadius: 2,
+                        stack: 'revenue'
+                    },
+                    {
+                        label: 'New Sub Revenue',
+                        data: [...PW.map(d=>d.rev_new), ...CW.map(d=>d.rev_new)],
+                        backgroundColor: COLORS.accent + 'CC',
+                        borderColor: COLORS.accent,
+                        borderWidth: 1,
+                        borderRadius: {topLeft: 4, topRight: 4},
+                        stack: 'revenue'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { position: 'top', labels: { color: '#9aa0a6', usePointStyle: true, padding: 20, font: {size: 12} } },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`,
+                            afterBody: function(items) {
+                                const idx = items[0].dataIndex;
+                                const all = [...PW, ...CW];
+                                const d = all[idx];
+                                const pct = ((d.rev_ren / d.daily_rev) * 100).toFixed(0);
+                                return [`Total: ${fmt(d.daily_rev)}`, `Renewal share: ${pct}%`];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#6b7280', font: {size: 11} }, stacked: true },
+                    y: { stacked: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280', callback: v => fmt(v) } }
+                }
+            }
+        });
+
+        // ==========================================
+        // CHART 2: Acquisition Funnel
+        // ==========================================
+        new Chart(document.getElementById('funnelChart'), {
+            type: 'bar',
+            data: {
+                labels: cwDates,
+                datasets: [
+                    {
+                        label: 'Installs (÷100)',
+                        data: CW.map(d => d.installs/100),
+                        backgroundColor: COLORS.accent + '80',
+                        borderColor: COLORS.accent,
+                        borderWidth: 1,
+                        borderRadius: 3,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'New Subs',
+                        data: CW.map(d => d.new_subs),
+                        backgroundColor: COLORS.green + '80',
+                        borderColor: COLORS.green,
+                        borderWidth: 1,
+                        borderRadius: 3,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Conv Rate %',
+                        data: CW.map(d => d.conv),
+                        type: 'line',
+                        borderColor: COLORS.yellow,
+                        backgroundColor: COLORS.yellow + '20',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: COLORS.yellow,
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: { legend: { position: 'top', labels: { color: '#9aa0a6', usePointStyle: true, padding: 12, font: {size: 11} } } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#6b7280', font: {size: 11} } },
+                    y: { position: 'left', grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280' } },
+                    y1: { position: 'right', min: 10, max: 20, grid: { display: false }, ticks: { color: COLORS.yellow, callback: v => v + '%' } }
+                }
+            }
+        });
+
+        // ==========================================
+        // CHART 3: Engagement-Renewal Nexus
+        // ==========================================
+        new Chart(document.getElementById('engRenChart'), {
+            type: 'line',
+            data: {
+                labels: allDates,
+                datasets: [
+                    {
+                        label: 'Engaged %',
+                        data: [...PW.map(d=>d.eng_pct), ...CW.map(d=>d.eng_pct)],
+                        borderColor: COLORS.purple,
+                        backgroundColor: COLORS.purple + '15',
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        tension: 0.3,
+                        fill: true,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Weighted RR',
+                        data: [...PW.map(d=>d.rr_w), ...CW.map(d=>d.rr_w)],
+                        borderColor: COLORS.orange,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        tension: 0.3,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Eng% Target (45%)',
+                        data: allDates.map(() => 45),
+                        borderColor: COLORS.purple + '40',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'RR Target (60%)',
+                        data: allDates.map(() => 60),
+                        borderColor: COLORS.orange + '40',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        yAxisID: 'y'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: { legend: { position: 'top', labels: { color: '#9aa0a6', usePointStyle: true, padding: 10, font: {size: 10} } } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#6b7280', font: {size: 11} } },
+                    y: { min: 20, max: 75, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280', callback: v => v + '%' } }
+                }
+            }
+        });
+
+        // ==========================================
+        // CHART 4: Renewal Rate Breakdown
+        // ==========================================
+        new Chart(document.getElementById('rrChart'), {
+            type: 'line',
+            data: {
+                labels: cwDates,
+                datasets: [
+                    {
+                        label: 'RR Engaged',
+                        data: CW.map(d=>d.rr_eng),
+                        borderColor: COLORS.green,
+                        borderWidth: 2.5,
+                        pointRadius: 5,
+                        pointBackgroundColor: CW.map(d => d.rr_eng < 70 ? COLORS.red : d.rr_eng < 80 ? COLORS.yellow : COLORS.green),
+                        pointBorderColor: CW.map(d => d.rr_eng < 70 ? COLORS.red : d.rr_eng < 80 ? COLORS.yellow : COLORS.green),
+                        tension: 0.3,
+                    },
+                    {
+                        label: 'RR Not-Engaged',
+                        data: CW.map(d=>d.rr_noteng),
+                        borderColor: COLORS.grey,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3,
+                    },
+                    {
+                        label: 'Weighted RR',
+                        data: CW.map(d=>d.rr_w),
+                        borderColor: COLORS.accent,
+                        borderWidth: 2,
+                        borderDash: [4, 4],
+                        pointRadius: 4,
+                        tension: 0.3,
+                    },
+                    {
+                        label: 'Target (80% / 30%)',
+                        data: CW.map(() => 80),
+                        borderColor: COLORS.green + '30',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { position: 'top', labels: { color: '#9aa0a6', usePointStyle: true, padding: 10, font: {size: 10} } },
+                    tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}%` } }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#6b7280', font: {size: 11} } },
+                    y: { min: 30, max: 90, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280', callback: v => v + '%' } }
+                }
+            }
+        });
+
+        // ==========================================
+        // CHART 5: Revenue Waterfall
+        // ==========================================
+        new Chart(document.getElementById('waterfallChart'), {
+            type: 'bar',
+            data: {
+                labels: cwDates,
+                datasets: [
+                    {
+                        label: 'Renewal Revenue',
+                        data: CW.map(d => d.rev_ren),
+                        backgroundColor: COLORS.teal + 'CC',
+                        borderRadius: 2,
+                        stack: 'rev'
+                    },
+                    {
+                        label: 'New Sub Revenue',
+                        data: CW.map(d => d.rev_new),
+                        backgroundColor: COLORS.accent + 'CC',
+                        borderRadius: {topLeft: 4, topRight: 4},
+                        stack: 'rev'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { color: '#9aa0a6', usePointStyle: true, padding: 10, font: {size: 10} } },
+                    tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}` } }
+                },
+                scales: {
+                    x: { stacked: true, grid: { display: false }, ticks: { color: '#6b7280', font: {size: 11} } },
+                    y: { stacked: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280', callback: v => fmt(v) } }
+                }
+            }
+        });
+
+        // ==========================================
+        // CHART 6: ARPU Tracking
+        // ==========================================
+        new Chart(document.getElementById('arpuChart'), {
+            type: 'line',
+            data: {
+                labels: cwDates,
+                datasets: [
+                    {
+                        label: 'ARPU New Sub',
+                        data: CW.map(d => d.arpu_new),
+                        borderColor: COLORS.accent,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3,
+                    },
+                    {
+                        label: 'ARPU Eng Renewal',
+                        data: CW.map(d => d.arpu_eng_ren),
+                        borderColor: COLORS.green,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3,
+                    },
+                    {
+                        label: 'ARPU NotEng Renewal',
+                        data: CW.map(d => d.arpu_noteng_ren),
+                        borderColor: COLORS.grey,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { position: 'top', labels: { color: '#9aa0a6', usePointStyle: true, padding: 10, font: {size: 10} } },
+                    tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: Rs ${ctx.parsed.y.toFixed(0)}` } }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#6b7280', font: {size: 11} } },
+                    y: { min: 90, max: 170, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280', callback: v => 'Rs ' + v } }
+                }
+            }
+        });
+
+        // ==========================================
+        // CHART 7: Expiring Cohort Profile
+        // ==========================================
+        new Chart(document.getElementById('expiringChart'), {
+            type: 'bar',
+            data: {
+                labels: cwDates,
+                datasets: [
+                    {
+                        label: 'Engaged Expiring',
+                        data: CW.map(d => Math.round(d.expiring * d.eng_pct / 100)),
+                        backgroundColor: COLORS.green + 'CC',
+                        borderRadius: 2,
+                        stack: 'exp'
+                    },
+                    {
+                        label: 'Not-Engaged Expiring',
+                        data: CW.map(d => Math.round(d.expiring * (100 - d.eng_pct) / 100)),
+                        backgroundColor: COLORS.red + '80',
+                        borderRadius: {topLeft: 4, topRight: 4},
+                        stack: 'exp'
+                    },
+                    {
+                        label: 'Total Renewals',
+                        data: CW.map(d => d.tot_ren),
+                        type: 'line',
+                        borderColor: COLORS.yellow,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: COLORS.yellow,
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: { legend: { position: 'top', labels: { color: '#9aa0a6', usePointStyle: true, padding: 10, font: {size: 10} } } },
+                scales: {
+                    x: { stacked: true, grid: { display: false }, ticks: { color: '#6b7280', font: {size: 11} } },
+                    y: { stacked: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280' } },
+                    y1: { position: 'right', grid: { display: false }, ticks: { color: COLORS.yellow } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

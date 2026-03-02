@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chai Shots — God Equation: February 2026 Executive Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #1B4F72;
+    --secondary: #2E86C1;
+    --accent: #E67E22;
+    --positive: #27AE60;
+    --negative: #E74C3C;
+    --neutral: #7F8C8D;
+    --bg: #F8F9FA;
+    --card-bg: #FFFFFF;
+    --border: #E0E0E0;
+    --text: #2C3E50;
+    --text-light: #6C757D;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  .header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 40px 0; text-align: center; }
+  .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .header .subtitle { font-size: 14px; opacity: 0.85; }
+  .header .date-badge { display: inline-block; background: rgba(255,255,255,0.15); padding: 6px 16px; border-radius: 20px; margin-top: 12px; font-size: 13px; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  .executive-summary { background: var(--card-bg); border-radius: 12px; padding: 32px; margin: -30px 24px 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: relative; z-index: 10; max-width: 1200px; margin-left: auto; margin-right: auto; }
+  .executive-summary h2 { color: var(--primary); font-size: 20px; margin-bottom: 16px; border-bottom: 2px solid var(--secondary); padding-bottom: 8px; }
+  .executive-summary p { color: var(--text); font-size: 15px; margin-bottom: 12px; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 32px 0; }
+  .kpi-card { background: var(--card-bg); border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--secondary); }
+  .kpi-card.positive { border-left-color: var(--positive); }
+  .kpi-card.negative { border-left-color: var(--negative); }
+  .kpi-card.accent { border-left-color: var(--accent); }
+  .kpi-label { font-size: 12px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .kpi-value { font-size: 28px; font-weight: 700; color: var(--primary); }
+  .kpi-change { font-size: 13px; margin-top: 4px; }
+  .kpi-change.up { color: var(--positive); }
+  .kpi-change.down { color: var(--negative); }
+
+  .section { margin: 40px 0; }
+  .section-title { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+  .section-subtitle { font-size: 14px; color: var(--text-light); margin-bottom: 24px; }
+
+  .card { background: var(--card-bg); border-radius: 12px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 24px; }
+  .card h3 { font-size: 16px; color: var(--primary); margin-bottom: 16px; }
+
+  .chart-container { position: relative; width: 100%; height: 350px; }
+  .chart-container.tall { height: 450px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--primary); color: white; padding: 10px 12px; text-align: left; font-weight: 600; white-space: nowrap; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover { background: #f0f7ff; }
+  .num-positive { color: var(--positive); font-weight: 600; }
+  .num-negative { color: var(--negative); font-weight: 600; }
+
+  .insight-box { background: #FFF8E1; border-left: 4px solid var(--accent); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; }
+  .insight-box strong { color: var(--accent); }
+  .insight-box.red { background: #FFEBEE; border-left-color: var(--negative); }
+  .insight-box.red strong { color: var(--negative); }
+  .insight-box.green { background: #E8F5E9; border-left-color: var(--positive); }
+  .insight-box.green strong { color: var(--positive); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+
+  .nav-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .nav-tab { padding: 8px 20px; border-radius: 20px; border: 2px solid var(--border); background: white; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+  .nav-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .nav-tab:hover { border-color: var(--secondary); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .footer { text-align: center; padding: 32px; color: var(--text-light); font-size: 12px; margin-top: 40px; border-top: 1px solid var(--border); }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .badge.green { background: #E8F5E9; color: var(--positive); }
+  .badge.red { background: #FFEBEE; color: var(--negative); }
+  .badge.orange { background: #FFF3E0; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>GOD EQUATION — February 2026</h1>
+  <div class="subtitle">Executive Performance Report | Chai Shots Revenue Intelligence</div>
+  <div class="date-badge">Data Period: Feb 1 – Feb 28, 2026 | Generated: Mar 2, 2026</div>
+</div>
+
+<div class="container">
+
+<!-- Executive Summary -->
+<div class="executive-summary">
+  <h2>Executive Summary</h2>
+  <p>February 2026 was a <strong>breakout month</strong> for Chai Shots. Total revenue reached <strong>₹1.11 Crore</strong> — an <strong>84% increase</strong> over January's ₹60.6L. This was driven by a compound effect: installs grew 43%, conversion rate improved by 2.8pp to 14.1%, and the renewal base expanded 69%. The month exhibited a clear pattern: a strong mid-month peak (W2 hitting ₹34.6L) followed by a gradual deceleration into W4 (₹25.2L) as install volumes tapered and a massive month-end expiry cohort (6,206 subs on Feb 28 alone) pressured renewal rates down.</p>
+  <p>The most significant structural shift: <strong>engagement rates jumped from 16.8% (Jan) to 24.6% (Feb)</strong> — a 46% improvement — signaling that the product is activating users more effectively. However, this engagement gain hasn't translated into renewal rate improvement. On a volume-weighted basis, renewal rate actually <strong>declined from 54.2% (Jan) to 52.6% (Feb)</strong> — a -1.6pp drop masked by the daily average (54.5%). The Feb 28 month-end expiry spike (6,206 subs) dragged aggregate renewal performance down significantly.</p>
+</div>
+
+<!-- KPI Dashboard -->
+<div class="container">
+<div class="kpi-grid">
+  <div class="kpi-card positive">
+    <div class="kpi-label">February Revenue</div>
+    <div class="kpi-value">₹1.11 Cr</div>
+    <div class="kpi-change up">↑ 84.0% vs January (₹60.6L)</div>
+  </div>
+  <div class="kpi-card positive">
+    <div class="kpi-label">Total Installs</div>
+    <div class="kpi-value">4.08L</div>
+    <div class="kpi-change up">↑ 43.0% vs January (2.85L)</div>
+  </div>
+  <div class="kpi-card positive">
+    <div class="kpi-label">New Subscribers</div>
+    <div class="kpi-value">57,783</div>
+    <div class="kpi-change up">↑ 84.2% vs January (31,369)</div>
+  </div>
+  <div class="kpi-card positive">
+    <div class="kpi-label">Conversion Rate</div>
+    <div class="kpi-value">14.1%</div>
+    <div class="kpi-change up">↑ 3.1pp vs January (11.0%)</div>
+  </div>
+  <div class="kpi-card accent">
+    <div class="kpi-label">Renewal Rate (Aggregate)</div>
+    <div class="kpi-value">52.6%</div>
+    <div class="kpi-change down">↓ 1.6pp vs January (54.2%)</div>
+  </div>
+  <div class="kpi-card positive">
+    <div class="kpi-label">Engagement Rate</div>
+    <div class="kpi-value">24.6%</div>
+    <div class="kpi-change up">↑ 7.8pp vs January (16.8%)</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">ARPU New Sub</div>
+    <div class="kpi-value">₹153.85</div>
+    <div class="kpi-change up">↑ ₹6.32 vs January</div>
+  </div>
+  <div class="kpi-card accent">
+    <div class="kpi-label">Total Renewals</div>
+    <div class="kpi-value">20,825</div>
+    <div class="kpi-change up">↑ 69.3% vs January (12,300)</div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showTab('overview')">Monthly Overview</div>
+  <div class="nav-tab" onclick="showTab('weekly')">Weekly Deep Dive</div>
+  <div class="nav-tab" onclick="showTab('acquisition')">Acquisition Engine</div>
+  <div class="nav-tab" onclick="showTab('retention')">Retention Engine</div>
+  <div class="nav-tab" onclick="showTab('whyanalysis')">Why Analysis</div>
+</div>
+
+<!-- TAB: Monthly Overview -->
+<div id="tab-overview" class="tab-content active">
+  <div class="section">
+    <div class="section-title">Monthly Revenue Growth Trajectory</div>
+    <div class="section-subtitle">Four-month revenue trend showing exponential growth from Nov 2025 to Feb 2026</div>
+
+    <div class="card">
+      <h3>Revenue Trend — Nov 2025 to Feb 2026</h3>
+      <div class="chart-container"><canvas id="monthlyRevenueChart"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h3>Monthly Comparison Table</h3>
+      <table>
+        <thead>
+          <tr><th>Metric</th><th>November</th><th>December</th><th>January</th><th>February</th><th>Feb vs Jan</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Total Revenue</td><td>₹21.4L</td><td>₹29.4L</td><td>₹60.6L</td><td><strong>₹111.4L</strong></td><td class="num-positive">+84.0%</td></tr>
+          <tr><td>Avg Daily Revenue</td><td>₹71,256</td><td>₹94,870</td><td>₹1.95L</td><td><strong>₹3.98L</strong></td><td class="num-positive">+103.7%</td></tr>
+          <tr><td>Total Installs</td><td>1.15L</td><td>2.25L</td><td>2.85L</td><td><strong>4.08L</strong></td><td class="num-positive">+43.0%</td></tr>
+          <tr><td>Total New Subs</td><td>13,430</td><td>14,804</td><td>31,369</td><td><strong>57,783</strong></td><td class="num-positive">+84.2%</td></tr>
+          <tr><td>Avg Conversion</td><td>11.7%</td><td>8.4%</td><td>11.0%</td><td><strong>14.1%</strong></td><td class="num-positive">+3.1pp</td></tr>
+          <tr><td>ARPU New Sub</td><td>₹119</td><td>₹141</td><td>₹148</td><td><strong>₹154</strong></td><td class="num-positive">+₹6</td></tr>
+          <tr><td>Total Renewals</td><td>4,900</td><td>7,772</td><td>12,300</td><td><strong>20,825</strong></td><td class="num-positive">+69.3%</td></tr>
+          <tr><td>Renewal Rate (Agg)</td><td>41.0%</td><td>42.4%</td><td>54.2%</td><td><strong>52.6%</strong></td><td class="num-negative">-1.6pp</td></tr>
+          <tr><td>Avg Engaged %</td><td>16.3%</td><td>13.4%</td><td>16.8%</td><td><strong>24.6%</strong></td><td class="num-positive">+7.8pp</td></tr>
+          <tr><td>Expiring Subs</td><td>12,746</td><td>17,634</td><td>22,697</td><td><strong>39,602</strong></td><td class="num-positive">+74.5%</td></tr>
+          <tr><td>New Subs Revenue</td><td>₹15.9L</td><td>₹21.1L</td><td>₹46.1L</td><td><strong>₹88.7L</strong></td><td class="num-positive">+92.4%</td></tr>
+          <tr><td>Renewals Revenue</td><td>₹5.4L</td><td>₹8.4L</td><td>₹14.5L</td><td><strong>₹22.7L</strong></td><td class="num-positive">+57.1%</td></tr>
+          <tr><td>New Subs Rev Mix</td><td>74.6%</td><td>71.6%</td><td>76.1%</td><td><strong>79.6%</strong></td><td class="num-positive">+3.5pp</td></tr>
+          <tr><td>RR Engaged</td><td>46.9%</td><td>57.4%</td><td>76.1%</td><td><strong>73.5%</strong></td><td class="num-negative">-2.6pp</td></tr>
+          <tr><td>RR Not-Engaged</td><td>40.3%</td><td>40.0%</td><td>49.7%</td><td><strong>48.4%</strong></td><td class="num-negative">-1.3pp</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Revenue Composition — Feb vs Jan</h3>
+      <div class="two-col">
+        <div class="chart-container" style="height:280px"><canvas id="revSplitFebChart"></canvas></div>
+        <div class="chart-container" style="height:280px"><canvas id="revSplitJanChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="insight-box green">
+      <strong>Growth Engine Working:</strong> Revenue nearly doubled despite only 43% more installs — the conversion rate improvement (+2.8pp) acted as a force multiplier. Each install is now worth 29% more in revenue than in January.
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Weekly Deep Dive -->
+<div id="tab-weekly" class="tab-content">
+  <div class="section">
+    <div class="section-title">Weekly Performance Progression</div>
+    <div class="section-subtitle">Week-by-week decomposition from Jan W4 through Feb W4</div>
+
+    <div class="card">
+      <h3>Daily Revenue Trend with 7-Day Moving Average</h3>
+      <div class="chart-container tall"><canvas id="dailyRevenueChart"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h3>Weekly Comparison Table</h3>
+      <table>
+        <thead>
+          <tr><th>Metric</th><th>Jan W4<br>(25-31)</th><th>Feb W1<br>(1-7)</th><th>Feb W2<br>(8-14)</th><th>Feb W3<br>(15-21)</th><th>Feb W4<br>(22-28)</th><th>W4 vs W3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Total Revenue</td><td>₹17.9L</td><td>₹22.9L</td><td><strong>₹34.6L</strong></td><td>₹28.9L</td><td>₹25.2L</td><td class="num-negative">-12.9%</td></tr>
+          <tr><td>Avg Daily Revenue</td><td>₹2.56L</td><td>₹3.26L</td><td><strong>₹4.94L</strong></td><td>₹4.13L</td><td>₹3.59L</td><td class="num-negative">-12.9%</td></tr>
+          <tr><td>Avg Installs/Day</td><td>11,613</td><td>11,740</td><td><strong>18,165</strong></td><td>16,446</td><td>11,904</td><td class="num-negative">-27.6%</td></tr>
+          <tr><td>Total New Subs</td><td>9,363</td><td>11,777</td><td><strong>18,950</strong></td><td>15,420</td><td>11,636</td><td class="num-negative">-24.5%</td></tr>
+          <tr><td>Avg Conversion</td><td>11.5%</td><td>14.3%</td><td><strong>14.9%</strong></td><td>13.4%</td><td>14.0%</td><td class="num-positive">+0.6pp</td></tr>
+          <tr><td>ARPU New</td><td>₹155</td><td>₹159</td><td>₹151</td><td>₹155</td><td>₹151</td><td class="num-negative">-₹4</td></tr>
+          <tr><td>Total Renewals</td><td>3,229</td><td>3,819</td><td>5,347</td><td>4,406</td><td><strong>7,253</strong></td><td class="num-positive">+64.6%</td></tr>
+          <tr><td>Renewal Rate (Agg)</td><td>58.1%</td><td>57.7%</td><td>53.9%</td><td>56.5%</td><td>47.5%</td><td class="num-negative">-9.0pp</td></tr>
+          <tr><td>Avg Engaged %</td><td>19.7%</td><td>22.0%</td><td>26.1%</td><td>25.1%</td><td>25.1%</td><td>-0.1pp</td></tr>
+          <tr><td>RR Engaged</td><td>79.0%</td><td>82.1%</td><td>74.1%</td><td>78.1%</td><td>59.7%</td><td class="num-negative">-18.4pp</td></tr>
+          <tr><td>RR Not-Engaged</td><td>52.9%</td><td>50.8%</td><td>47.6%</td><td>49.4%</td><td>45.7%</td><td class="num-negative">-3.7pp</td></tr>
+          <tr><td>Renewals Rev</td><td>₹3.5L</td><td>₹4.2L</td><td>₹5.9L</td><td>₹5.0L</td><td><strong>₹7.6L</strong></td><td class="num-positive">+52.1%</td></tr>
+          <tr><td>New Subs Rev %</td><td>80.6%</td><td>81.5%</td><td>82.9%</td><td>82.7%</td><td>69.8%</td><td class="num-negative">-12.9pp</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Week-over-Week Revenue Waterfall</h3>
+      <div class="chart-container"><canvas id="weeklyWaterfallChart"></canvas></div>
+    </div>
+
+    <div class="insight-box">
+      <strong>The W2 Peak & W4 Decline:</strong> Feb W2 was the month's zenith — install volumes surged 55% WoW (likely a paid acquisition push) and conversion held strong at 14.9%. The subsequent decline through W3 and W4 tracks directly to install volume reduction (-28% W4 vs W2), not conversion quality. Conversion actually recovered 0.6pp in W4.
+    </div>
+
+    <div class="insight-box red">
+      <strong>W4 Renewal Rate Collapse:</strong> The most concerning signal is W4's aggregate renewal rate dropping to 47.5% from W3's 56.5% (-9.0pp). Engaged RR crashed from 78.1% to 59.7%. This is explained by the Feb 28 month-end expiry spike — 6,206 subs expired on a single day (vs avg 1,500/day), overwhelming the renewal engine. The sheer volume diluted rates even though absolute renewal numbers hit their weekly peak (7,253).
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Acquisition Engine -->
+<div id="tab-acquisition" class="tab-content">
+  <div class="section">
+    <div class="section-title">Acquisition Engine Analysis</div>
+    <div class="section-subtitle">Install quality, conversion efficiency, and new subscriber economics</div>
+
+    <div class="card">
+      <h3>Daily Installs, New Subs & Conversion Rate</h3>
+      <div class="chart-container tall"><canvas id="acquisitionChart"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h3>ARPU New Subscriber Trend</h3>
+      <div class="chart-container"><canvas id="arpuNewChart"></canvas></div>
+    </div>
+
+    <div class="insight-box green">
+      <strong>Conversion Efficiency Gain:</strong> February's 14.1% avg conversion is the highest since launch. This means for every 100 installs, we now convert 14.1 into paying subscribers (vs 11.3 in Jan, 8.4 in Dec). The funnel is tightening, not just getting wider.
+    </div>
+
+    <div class="insight-box">
+      <strong>ARPU Stability:</strong> Despite scaling installs 43%, ARPU held steady at ₹154 (up from ₹148 in Jan). This means we're not buying cheaper/lower-intent users — the quality of traffic has maintained parity while volume increased. This is a positive signal about acquisition channel health.
+    </div>
+
+    <div class="insight-box red">
+      <strong>Install Volatility:</strong> Daily installs ranged from 8,831 (Feb 28) to 20,201 (Feb 12) — a 2.3x range. The sharp drop from W2 peaks (18K+/day) to W4 lows (9-12K/day) suggests either budget pacing changes or campaign fatigue. The Feb 12 peak coincided with the month's highest revenue day (₹5.6L).
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Retention Engine -->
+<div id="tab-retention" class="tab-content">
+  <div class="section">
+    <div class="section-title">Retention & Renewal Engine</div>
+    <div class="section-subtitle">Engagement, renewal rates, and the engaged vs not-engaged divide</div>
+
+    <div class="card">
+      <h3>Renewal Rates — Overall, Engaged & Not-Engaged</h3>
+      <div class="chart-container tall"><canvas id="renewalRatesChart"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h3>Engagement Rate Trend (Jan – Feb)</h3>
+      <div class="chart-container"><canvas id="engagementChart"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h3>Feb 28 Month-End Spike — Expiring vs Renewed</h3>
+      <div class="chart-container"><canvas id="monthEndSpikeChart"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h3>Revenue per Renewal — Engaged vs Not-Engaged</h3>
+      <div class="chart-container"><canvas id="arpuRenewalChart"></canvas></div>
+    </div>
+
+    <div class="insight-box green">
+      <strong>Engagement Breakthrough:</strong> Engagement jumped from 16.8% → 24.6% — a 46% improvement. This is the most significant structural change in February. More users are actively consuming content before their renewal window, which should translate to higher future renewal rates as this cohort matures.
+    </div>
+
+    <div class="insight-box">
+      <strong>Renewal Rate Paradox:</strong> Despite engagement improving 46%, overall renewal rate barely moved (+0.4pp). This is explained by the denominator effect — expiring subs grew 74.5% (22,697 → 39,602), diluting the rate. The absolute number of renewals actually grew 69.3%, nearly keeping pace with expiries.
+    </div>
+
+    <div class="insight-box red">
+      <strong>Engaged RR Declining:</strong> Engaged renewal rate fell from 76.1% (Jan) to 73.5% (Feb), with a sharp W4 drop to 59.7%. The Feb 28 spike (6,206 expiries) is the primary culprit — engaged RR on that day was 43.0%, dragging the weekly average. When excluding Feb 28, W4 engaged RR is ~62%, still below W1's 82.1% but less alarming.
+    </div>
+
+    <div class="insight-box">
+      <strong>ARPU Compression on Renewals:</strong> Revenue per engaged renewal dropped from ₹121.53 (Jan) to ₹118.41 (Feb), and not-engaged renewal ARPU fell more steeply from ₹117.09 to ₹106.02. This suggests either plan-mix shifts toward lower-priced plans on renewal, or promotional pricing affecting renewal revenue.
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Why Analysis -->
+<div id="tab-whyanalysis" class="tab-content">
+  <div class="section">
+    <div class="section-title">Why Did Each Thing Happen?</div>
+    <div class="section-subtitle">Causal analysis connecting every major February movement to its root driver</div>
+
+    <div class="card">
+      <h3>1. Why did revenue nearly double (+84%)?</h3>
+      <p style="margin-bottom:12px">Revenue is a compound function: Installs × Conversion × ARPU for new subs, plus Expiring × Renewal Rate × ARPU for renewals. All three acquisition inputs improved simultaneously:</p>
+      <table>
+        <thead><tr><th>Driver</th><th>January</th><th>February</th><th>Change</th><th>Revenue Impact</th></tr></thead>
+        <tbody>
+          <tr><td>Installs</td><td>2.85L</td><td>4.08L</td><td class="num-positive">+43%</td><td>~₹20L incremental</td></tr>
+          <tr><td>Conversion Rate</td><td>11.0%</td><td>14.1%</td><td class="num-positive">+3.1pp</td><td>~₹15L incremental</td></tr>
+          <tr><td>ARPU New</td><td>₹148</td><td>₹154</td><td class="num-positive">+₹6</td><td>~₹3.5L incremental</td></tr>
+          <tr><td>Renewal Base Growth</td><td>22,697 expiring</td><td>39,602 expiring</td><td class="num-positive">+74.5%</td><td>~₹8L incremental</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:12px">The compound effect means each driver amplifies the others. A 43% install increase at a 25% higher conversion rate doesn't produce 43% more revenue — it produces 84% more.</p>
+    </div>
+
+    <div class="card">
+      <h3>2. Why did W2 (Feb 8-14) peak and then decline?</h3>
+      <p>W2 averaged 18,165 installs/day — the month's highest. This correlates with a likely paid acquisition burst (Valentine's Week marketing is a common subscription app strategy). When the campaign spend normalized post-Valentine's, install volumes dropped 9.5% in W3 and another 28% in W4. Revenue mechanically follows install volume because new subs account for ~80% of revenue.</p>
+    </div>
+
+    <div class="card">
+      <h3>3. Why did conversion rate improve from 11.0% to 14.1%?</h3>
+      <p>Three concurrent factors: (a) better traffic quality from performance marketing optimization — the fact that ARPU held steady proves quality didn't degrade; (b) potential product-side improvements in onboarding/paywall that increased trial-to-paid conversion; (c) seasonal effect — post-New Year resolution traffic typically converts better than holiday casual browsers.</p>
+    </div>
+
+    <div class="card">
+      <h3>4. Why did engagement jump from 16.8% to 24.6%?</h3>
+      <p>This is the most structurally positive signal. Possible drivers: (a) content library improvements making the product stickier; (b) push notification or re-engagement campaign effectiveness; (c) the higher-converting user cohort from improved acquisition is inherently more engaged. The timing correlates — as conversion improved, the quality of users entering the subscriber base improved, which shows up as higher engagement weeks later.</p>
+    </div>
+
+    <div class="card">
+      <h3>5. Why did W4 aggregate renewal rate crash to 47.5%?</h3>
+      <p>This is primarily a denominator problem, not a numerator problem. Feb 28 had 6,206 expiring subs (vs daily avg of ~1,500) — this is the cohort that subscribed ~30 days earlier when the app was seeing massive install spikes in late January. This cohort is: (a) larger than any prior expiry cohort, (b) exposed to the product for fewer average days (month-end vs mid-month subscribers), and (c) more likely to include trial/promotional users. The renewal rate on Feb 28 specifically was 44.0%, but the days before it (Feb 22-27) averaged ~50.4%, which is only slightly below W3's 56.5%. Note: daily average RR (49.2%) masks the true volume-weighted impact — the aggregate 47.5% more accurately reflects actual revenue pressure.</p>
+    </div>
+
+    <div class="card">
+      <h3>6. Why did renewal ARPU compress?</h3>
+      <p>Engaged renewal ARPU dropped from ₹122 (Jan) to ₹118 (Feb), and not-engaged renewal ARPU fell more sharply from ₹117 to ₹106. Two likely causes: (a) plan-mix shift — as the subscriber base scales, a larger proportion may be on the ₹99/month plan vs quarterly/annual plans; (b) the rapidly growing base means more first-time renewals (at base plan prices) vs long-tenured users who may have been on higher-priced legacy plans.</p>
+    </div>
+
+    <div class="card">
+      <h3>7. Why is new subs revenue share increasing (76.1% → 79.6%)?</h3>
+      <p>The acquisition engine is growing faster than the retention engine can absorb. New subs revenue grew 92.4% while renewals revenue grew 57.1%. This is expected in a hypergrowth phase — the renewal base lags acquisition by one billing cycle. As long as renewal rates hold, this ratio should normalize toward 60-70% new / 30-40% renewals over the next 2-3 months as the Feb subscriber cohort hits its first renewal window in March.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- container -->
+
+<div class="footer">
+  <p>Chai Shots — God Equation Executive Report | February 2026 | Internal & Confidential</p>
+  <p>Data Source: God Equation Revenue Lite Export (Mar 2, 2026) | Analysis: Founder's Office</p>
+  <p style="margin-top:4px; font-size:11px; opacity:0.7;">Methodology: Renewal rates use aggregate method (total renewals ÷ total expiring) for economic accuracy. Conversion rates use aggregate method (total new subs ÷ total installs).</p>
+</div>
+
+<script>
+// Tab navigation
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+const colors = {
+  primary: '#1B4F72', secondary: '#2E86C1', accent: '#E67E22',
+  positive: '#27AE60', negative: '#E74C3C', neutral: '#7F8C8D'
+};
+
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+
+// Monthly Revenue Bar Chart
+new Chart(document.getElementById('monthlyRevenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['November', 'December', 'January', 'February'],
+    datasets: [{
+      label: 'New Subs Revenue',
+      data: [1594764, 2105700, 4610289, 8871594],
+      backgroundColor: colors.secondary + 'CC',
+    }, {
+      label: 'Renewals Revenue',
+      data: [542913, 835267, 1446424, 2272571],
+      backgroundColor: colors.accent + 'CC',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => '₹' + (v/100000).toFixed(0) + 'L' } } },
+    plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ₹' + (ctx.raw/100000).toFixed(1) + 'L' } } }
+  }
+});
+
+// Revenue Split Donut - Feb
+new Chart(document.getElementById('revSplitFebChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['New Subs (79.6%)', 'Renewals (20.4%)'],
+    datasets: [{ data: [8871594, 2272571], backgroundColor: [colors.secondary, colors.accent], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'February 2026' } } }
+});
+
+// Revenue Split Donut - Jan
+new Chart(document.getElementById('revSplitJanChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['New Subs (76.1%)', 'Renewals (23.9%)'],
+    datasets: [{ data: [4610289, 1446424], backgroundColor: [colors.secondary, colors.accent], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'January 2026' } } }
+});
+
+// Daily Revenue data
+const febDates = ['Feb 01','Feb 02','Feb 03','Feb 04','Feb 05','Feb 06','Feb 07','Feb 08','Feb 09','Feb 10','Feb 11','Feb 12','Feb 13','Feb 14','Feb 15','Feb 16','Feb 17','Feb 18','Feb 19','Feb 20','Feb 21','Feb 22','Feb 23','Feb 24','Feb 25','Feb 26','Feb 27','Feb 28'];
+const febRevenue = [262516,274828,269646,314338,337661,423179,403327,470928,509408,516908,540637,560752,448592,407928,420305,351376,487835,408740,451258,380574,387869,373034,357073,373591,335076,327875,276172,472739];
+const febNewSubsRev = [212785,212978,213478,247187,283854,352076,340506,391950,417310,421335,451355,472499,374448,337041,352281,283666,405475,341258,378799,310070,316226,296121,287714,298284,250553,238013,188734,195601];
+const febRenewalsRev = [49731,61850,56167,67151,53808,71103,62821,78978,92098,95574,89282,88252,74144,70887,68025,67710,82360,67482,72460,70503,71643,76913,69359,75308,84524,89862,87438,277139];
+
+// Daily Revenue Line
+new Chart(document.getElementById('dailyRevenueChart'), {
+  type: 'line',
+  data: {
+    labels: febDates,
+    datasets: [{
+      label: 'Daily Revenue',
+      data: febRevenue,
+      borderColor: colors.primary,
+      backgroundColor: colors.primary + '20',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 3,
+    }, {
+      label: 'New Subs Revenue',
+      data: febNewSubsRev,
+      borderColor: colors.secondary,
+      borderDash: [5,5],
+      tension: 0.3,
+      pointRadius: 0,
+    }, {
+      label: 'Renewals Revenue',
+      data: febRenewalsRev,
+      borderColor: colors.accent,
+      borderDash: [5,5],
+      tension: 0.3,
+      pointRadius: 0,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { ticks: { callback: v => '₹' + (v/1000).toFixed(0) + 'K' } } },
+    plugins: {
+      annotation: {},
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ₹' + (ctx.raw/1000).toFixed(0) + 'K' } }
+    }
+  }
+});
+
+// Weekly Waterfall
+new Chart(document.getElementById('weeklyWaterfallChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Jan W4', 'Feb W1', 'Feb W2', 'Feb W3', 'Feb W4'],
+    datasets: [{
+      label: 'Total Weekly Revenue',
+      data: [1792947, 2285495, 3455152, 2887957, 2515561],
+      backgroundColor: [colors.neutral, colors.secondary, colors.positive, colors.accent, colors.negative+'BB'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { ticks: { callback: v => '₹' + (v/100000).toFixed(1) + 'L' } } },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// Acquisition Chart
+const febInstalls = [13230,10527,9606,10373,11408,13220,13819,16322,17556,18018,21465,20201,17874,15716,16126,13853,18430,16814,18906,15897,15098,13834,12676,13391,12389,12442,9763,8831];
+const febConversion = [10.33,12.60,13.69,14.33,16.00,16.72,16.27,15.59,15.29,15.32,14.12,15.92,13.93,14.16,14.00,13.25,13.92,13.41,12.18,13.09,14.07,13.90,14.77,15.06,13.37,12.39,13.65,14.65];
+
+new Chart(document.getElementById('acquisitionChart'), {
+  type: 'bar',
+  data: {
+    labels: febDates,
+    datasets: [{
+      label: 'Installs',
+      data: febInstalls,
+      backgroundColor: colors.secondary + '80',
+      yAxisID: 'y',
+    }, {
+      type: 'line',
+      label: 'Conversion Rate %',
+      data: febConversion,
+      borderColor: colors.negative,
+      borderWidth: 2,
+      pointRadius: 3,
+      yAxisID: 'y1',
+      tension: 0.3,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { position: 'left', title: { display: true, text: 'Installs' } },
+      y1: { position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Conversion %' }, min: 8, max: 20 }
+    }
+  }
+});
+
+// ARPU New
+const febArpuNew = [155.66,160.62,162.34,166.34,155.54,159.31,151.47,154.07,155.48,152.66,148.91,146.88,150.44,151.48,156.08,154.50,158.08,151.33,164.55,149.00,148.88,153.99,153.69,147.88,151.30,154.45,141.59,151.16];
+new Chart(document.getElementById('arpuNewChart'), {
+  type: 'line',
+  data: {
+    labels: febDates,
+    datasets: [{
+      label: 'ARPU New Sub (₹)',
+      data: febArpuNew,
+      borderColor: colors.primary,
+      backgroundColor: colors.primary + '15',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 3,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { min: 130, max: 175, ticks: { callback: v => '₹' + v } } }
+  }
+});
+
+// Renewal Rates
+const febRR = [58.26,55.25,54.84,61.43,57.97,56.67,59.83,63.89,49.50,55.03,51.67,51.30,57.75,52.12,53.89,60.21,60.36,58.47,56.03,54.58,52.48,52.77,49.57,49.48,52.48,50.11,46.07,43.96];
+const febRRE = [83.75,73.39,67.02,92.44,84.65,86.59,87.16,93.25,64.13,75.72,66.26,68.42,79.23,71.92,76.61,84.53,74.83,82.94,75.09,75.63,76.95,70.59,63.69,63.69,60.10,62.56,54.07,43.00];
+const febRRNE = [51.94,49.93,51.75,52.02,49.61,48.43,51.87,55.43,44.15,47.70,46.46,44.76,48.97,45.61,45.49,52.13,55.40,50.27,49.25,47.72,45.35,46.87,44.62,44.59,49.78,46.26,43.40,44.26];
+
+new Chart(document.getElementById('renewalRatesChart'), {
+  type: 'line',
+  data: {
+    labels: febDates,
+    datasets: [{
+      label: 'Overall Renewal Rate',
+      data: febRR,
+      borderColor: colors.primary,
+      borderWidth: 2.5,
+      tension: 0.3,
+      pointRadius: 2,
+    }, {
+      label: 'RR Engaged',
+      data: febRRE,
+      borderColor: colors.positive,
+      borderDash: [5,5],
+      tension: 0.3,
+      pointRadius: 0,
+    }, {
+      label: 'RR Not-Engaged',
+      data: febRRNE,
+      borderColor: colors.negative,
+      borderDash: [5,5],
+      tension: 0.3,
+      pointRadius: 0,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { min: 30, max: 100, title: { display: true, text: 'Renewal Rate %' } } }
+  }
+});
+
+// Engagement Trend
+const engDates = [...Array(59).keys()].map(i => { const d = new Date(2026, 0, 1); d.setDate(d.getDate()+i); return d.toLocaleDateString('en-US', {month:'short',day:'numeric'}); });
+const engData = [16.25,15.14,13.11,15.19,19.41,13.32,16.29,16.05,13.68,18.17,15.52,17.55,18.32,18.81,16.83,17.45,13.85,9.27,10.64,12.10,15.09,14.41,15.89,17.05,14.72,12.69,12.69,18.36,12.21,12.76,10.19,19.88,22.68,20.22,23.27,23.85,21.58,22.57,22.36,26.79,26.13,26.32,27.61,29.00,24.75,26.99,24.93,25.51,25.10,26.22,24.56,22.56,24.88,25.99,25.61,26.14,23.66,25.01,24.17];
+
+new Chart(document.getElementById('engagementChart'), {
+  type: 'line',
+  data: {
+    labels: engDates,
+    datasets: [{
+      label: 'Engaged %',
+      data: engData,
+      borderColor: colors.positive,
+      backgroundColor: colors.positive + '15',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 1,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { min: 5, max: 35, title: { display: true, text: 'Engaged %' } } }
+  }
+});
+
+// Month-end spike
+const spikeDates = ['Feb 19','Feb 20','Feb 21','Feb 22','Feb 23','Feb 24','Feb 25','Feb 26','Feb 27','Feb 28'];
+const spikeExpiring = [1087,1136,1250,1298,1293,1441,1515,1750,1767,6206];
+const spikeRenewals = [609,620,656,685,641,713,795,877,814,2728];
+
+new Chart(document.getElementById('monthEndSpikeChart'), {
+  type: 'bar',
+  data: {
+    labels: spikeDates,
+    datasets: [{
+      label: 'Expiring Subs',
+      data: spikeExpiring,
+      backgroundColor: colors.accent + '80',
+    }, {
+      label: 'Renewals',
+      data: spikeRenewals,
+      backgroundColor: colors.positive + '80',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw.toLocaleString() } } }
+  }
+});
+
+// ARPU Renewal
+const febArpuEngR = [107.96,134.82,114.87,113.18,122.10,121.54,119.79,117.72,117.30,118.05,116.15,120.74,122.59,126.86,118.02,113.29,136.06,125.55,135.92,123.41,118.81,119.83,115.82,107.25,110.55,103.44,110.72,103.26];
+const febArpuNER = [105.27,108.57,108.58,112.98,102.90,104.43,103.25,105.80,103.59,104.08,108.65,101.66,102.50,109.25,113.92,101.76,107.92,109.10,109.81,108.72,104.47,108.52,104.39,104.82,104.51,102.06,106.05,101.07];
+
+new Chart(document.getElementById('arpuRenewalChart'), {
+  type: 'line',
+  data: {
+    labels: febDates,
+    datasets: [{
+      label: 'ARPU Engaged Renewal (₹)',
+      data: febArpuEngR,
+      borderColor: colors.positive,
+      borderWidth: 2,
+      tension: 0.3,
+      pointRadius: 3,
+    }, {
+      label: 'ARPU Not-Engaged Renewal (₹)',
+      data: febArpuNER,
+      borderColor: colors.negative,
+      borderWidth: 2,
+      tension: 0.3,
+      pointRadius: 3,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { min: 90, max: 145, ticks: { callback: v => '₹' + v } } }
+  }
+});
+</script>
+</body>
+</html>
